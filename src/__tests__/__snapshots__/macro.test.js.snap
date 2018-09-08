@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`macros basic: basic 1`] = `
+"
+import loadableImport from \\"../macro\\";
+import loadable from \\"loadable-components\\";
+
+const AsyncComponent = loadable(() => loadableImport(\\"./MyComponent\\"));
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+import loadable from \\"loadable-components\\";
+
+const AsyncComponent = loadable(
+  () => import(/*webpackChunkName: MyComponent*/ \\"./MyComponent\\"),
+  {
+    modules: [\\"MyComponent\\"],
+  }
+);
+
+"
+`;
+
+exports[`macros multiple imports: multiple imports 1`] = `
+"
+import loadableImport from \\"../macro\\";
+import loadable from \\"loadable-components\\";
+
+const What = loadable(async () => {
+  const { default: DeepWord } = await loadableImport(\\"./DeepWorld\\");
+  const { default: DeepAmazing } = await loadableImport(\\"./DeepAmazing\\");
+  return [DeepWord, DeepAmazing];
+});
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+import loadable from \\"loadable-components\\";
+
+const What = loadable(
+  async () => {
+    const {
+      default: DeepWord,
+    } = await import(/*webpackChunkName: DeepWorld*/ \\"./DeepWorld\\");
+    const {
+      default: DeepAmazing,
+    } = await import(/*webpackChunkName: DeepAmazing*/ \\"./DeepAmazing\\");
+    return [DeepWord, DeepAmazing];
+  },
+  {
+    modules: [\\"DeepWorld\\", \\"DeepAmazing\\"],
+  }
+);
+
+"
+`;
+
+exports[`macros no usage: no usage 1`] = `
+"
+import loadableImport from \\"../macro\\";
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+
+"
+`;
+
+exports[`macros with options: with options 1`] = `
+"
+import loadableImport from \\"../macro\\";
+import loadable from \\"loadable-components\\";
+
+const AsyncComponent = loadable(() => loadableImport(\\"./MyComponent\\"), {
+  LoadingComponent: () => \\"Loading...\\",
+});
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+import loadable from \\"loadable-components\\";
+
+const AsyncComponent = loadable(
+  () => import(/*webpackChunkName: MyComponent*/ \\"./MyComponent\\"),
+  {
+    LoadingComponent: () => \\"Loading...\\",
+    modules: [\\"MyComponent\\"],
+  }
+);
+
+"
+`;
